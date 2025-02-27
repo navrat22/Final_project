@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Přidat lék</h2>
+  <form method="post" class="card p-3 shadow">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Uložit</button>
+  </form>
+
+
+  <a href="{% url 'add_new_medicine' %}" class="btn btn-success mt-3">➕ Přidat nový lék</a>
+
+  <a href="{% url 'medicine_list' %}" class="btn btn-secondary mt-3">⬅ Zpět</a>
+{% endblock %}

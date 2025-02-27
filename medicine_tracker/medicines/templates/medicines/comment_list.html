@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>My Medicines</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Medicine</th>
+        <th>Dosage</th>
+        <th>Remaining Doses</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for medicine in medicines %}
+      <tr>
+          <td>
+            <strong>{{ medicine.medicine.name }}</strong><br>
+            <small class="text-muted">
+                <div>📝 Poznámka:
+                    {% if medicine.notes %}
+                        {{ medicine.notes }}
+                    {% else %}
+                        Žádná poznámka
+                    {% endif %}
+                </div>
+
+                <div>📅 Poslední užití:
+                    {% if medicine.last_taken %}
+                        {{ medicine.last_taken }}
+                    {% else %}
+                        Nezadáno
+                    {% endif %}
+                </div>
+
+                <div>🗓 Den užití:
+                    {% if medicine.day %}
+                        {{ medicine.day }}
+                    {% else %}
+                        Nezadáno
+                    {% endif %}
+                </div>
+
+                <div>⏰ Čas užití:
+                    {% if medicine.time %}
+                        {{ medicine.time }}
+                    {% else %}
+                        Nezadáno
+                    {% endif %}
+                </div>
+            </small>
+
+            <details class="mt-2">
+                <summary class="btn btn-light btn-sm">💬 Komentáře</summary>
+                <ul class="list-group mt-2">
+                    {% for comment in medicine.comments.all %}
+                        <li class="list-group-item">
+                            <strong>{{ comment.user.username }}</strong> ({{ comment.created_at|date:"d.m.Y H:i" }})<br>
+                            {{ comment.text }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">📭 Žádné komentáře.</li>
+                    {% endfor %}
+                </ul>
+
+                <form method="post" action="{% url 'comment_detail' medicine.id %}">
+                    {% csrf_token %}
+                    <textarea name="text" class="form-control mt-2" placeholder="Přidejte komentář..." required></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">💾 Uložit komentář</button>
+                </form>
+            </details>
+          </td>
+          <td>{{ medicine.dosage }}</td>
+          <td>{{ medicine.remaining_doses }}</td>
+          <td>
+            <a href="{% url 'take_dose' medicine.id %}" class="btn btn-success btn-sm">💊 Take Dose</a>
+            <a href="{% url 'edit_medicine' medicine.id %}" class="btn btn-warning btn-sm">✏ Edit</a>
+            <a href="{% url 'delete_medicine' medicine.id %}" class="btn btn-danger btn-sm">🗑 Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{% url 'add_medicine' %}" class="btn btn-primary mt-3">➕ Add Medicine</a>
+
+  <div class="mt-3 d-flex gap-2">
+    <details>
+      <summary class="btn btn-info">📖 Historie užívání léků</summary>
+      <div class="mt-3">
+          <h3 class="mt-4">🕘 Historie užívání léků</h3>
+          <table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>Lék</th>
+                      <th>Datum užití</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for entry in history %}
+                      <tr>
+                          <td>{{ entry.user_medicine.medicine.name }}</td>
+                          <td>{{ entry.date|date:"d.m.Y H:i" }}</td>
+                      </tr>
+                  {% empty %}
+                      <tr>
+                          <td colspan="2">📭 Žádná historie není k dispozici.</td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+    </details>
+
+    <a href="{% url 'comment_list' %}" class="btn btn-warning">💬 Seznam komentářů</a>
+  </div>
+
+{% endblock %}

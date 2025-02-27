@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>🩺 Detail léku: {{ medicine.name }}</h2>
+<ul class="list-group">
+    <li class="list-group-item"><strong>Výrobce:</strong> {{ medicine.manufacturer }}</li>
+    <li class="list-group-item"><strong>Teplota skladování:</strong> {{ medicine.storage_temp }}</li>
+    <li class="list-group-item"><strong>Nežádoucí účinky:</strong> {{ medicine.side_effects }}</li>
+</ul>
+
+<h3 class="mt-4">💬 Komentáře</h3>
+<ul class="list-group">
+    {% for comment in comments %}
+      <li class="list-group-item">
+        <strong>{{ comment.user.username }}</strong>
+        ({{ comment.created_at|date:"d.m.Y H:i" }})<br>
+        {{ comment.text }}
+      </li>
+    {% empty %}
+      <li class="list-group-item">📭 Žádné komentáře.</li>
+    {% endfor %}
+</ul>
+
+<!-- Formulář pro nový komentář: odešle POST na TUTO stránku -->
+<form method="POST" class="mt-3">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Přidat komentář</button>
+</form>
+
+<a href="{% url 'medicine_list' %}" class="btn btn-secondary mt-3">⬅ Zpět</a>
+{% endblock %}
