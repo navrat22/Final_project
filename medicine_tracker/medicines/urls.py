@@ -5,7 +5,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', home_redirect, name='home_redirect'),  # nebo přímo 'medicine_list'
+    path('', home_redirect, name='home_redirect'),
     path('medicine-list/', medicine_list, name='medicine_list'),
     path('add-medicine/', add_medicine, name='add_medicine'),
     path('edit-medicine/<int:medicine_id>/', edit_medicine, name='edit_medicine'),

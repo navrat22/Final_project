@@ -251,3 +251,5 @@ def medicine_detail(request, medicine_id):
         """
     medicine = get_object_or_404(Medicine, id=medicine_id)
     return render(request, 'medicines/medicine_detail.html', {'medicine': medicine})
+
+
