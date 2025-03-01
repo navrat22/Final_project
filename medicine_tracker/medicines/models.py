@@ -27,12 +27,12 @@ class Medicine(models.Model):
     side_effects = models.TextField(blank=True, null=True)
     manufacturer = models.TextField(blank=True, null=True)
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(args, kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.remaining_doses = None
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 class Comment(models.Model):
     """

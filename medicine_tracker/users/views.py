@@ -24,7 +24,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
+            user.set_password(form.cleaned_data['password1'])
             user.save()
             UserProfile.objects.create(user=user)
             login(request, user)

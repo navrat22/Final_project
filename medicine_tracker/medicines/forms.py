@@ -1,6 +1,19 @@
 from django import forms
-from .models import UserMedicine, Medicine, Comment
+
+
+from .models import UserMedicine, Medicine, Comment, User
 from .models import DOSAGE_CHOICES
+
+
+class UserCreationForm:
+    pass
+
+
+class UserRegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']  # Přidali jsme password1 a password2
+
 
 class UserMedicineForm(forms.ModelForm):
     medicine = forms.ModelChoiceField(
